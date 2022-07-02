@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/modules/admin/Create_analysis_rays/create_analysis_rays.dart';
 import 'package:mobile_app/modules/admin/Create_drugs/create_drugs.dart';
 import 'package:mobile_app/modules/admin/create_admin/create_admin.dart';
+import 'package:mobile_app/modules/admin/create_diagnose/create_diagnose.dart';
 import 'package:mobile_app/modules/admin/create_doctor/create_doctor.dart';
 import 'package:mobile_app/modules/admin/create_patient/create_patient.dart';
 import 'package:mobile_app/shared/components/components.dart';
@@ -85,6 +86,17 @@ class AdminScreen extends StatelessWidget {
               changeText: 'Analysis and Rays',
               onPressed: () {
                 navigateTo(context, const CreateAnalysisScreen());
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            defultButton(
+              height: 100,
+              changeColor: btnsColor,
+              changeText: 'Diagnose',
+              onPressed: () {
+                navigateTo(context, const CreateDiagnoseScreen());
               },
             ),
           ],

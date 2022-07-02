@@ -32,3 +32,23 @@ class AppGetDoctorErrorStates extends GetDoctorStates {
 
   AppGetDoctorErrorStates(this.error);
 }
+
+class AppGetAnalysisResultsLoadingStates extends GetDoctorStates {}
+
+class AppGetAnalysisResultsSuccessStates extends GetDoctorStates {}
+
+class AppGetAnalysisResultsErrorStates extends GetDoctorStates {
+  final String error;
+
+  AppGetAnalysisResultsErrorStates(this.error);
+}
+
+class AppGetDrugResultsLoadingStates extends GetDoctorStates {}
+
+class AppGetDrugResultsSuccessStates extends GetDoctorStates {}
+
+class AppGetDrugResultsErrorStates extends GetDoctorStates {
+  final String error;
+
+  AppGetDrugResultsErrorStates(this.error);
+}

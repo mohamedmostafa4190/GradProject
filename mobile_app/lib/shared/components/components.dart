@@ -6,9 +6,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_app/models/getcheckup_model.dart';
 import 'package:mobile_app/models/getdoctor_model.dart';
+import 'package:mobile_app/models/getpatient_model.dart';
+import 'package:mobile_app/modules/doctor/patient_result_forDoctor.dart';
+import 'package:mobile_app/modules/doctor/profile_screen.dart';
 import 'package:mobile_app/modules/loginscreen.dart';
-import 'package:mobile_app/modules/patient_result.dart';
-import 'package:mobile_app/modules/profile_screen.dart';
+import 'package:mobile_app/modules/patient/patient_result_forPatient.dart';
 import 'package:mobile_app/shared/bloc/doctor_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/profile/cubit.dart';
 import 'package:mobile_app/shared/network/local/cache_helper.dart';
@@ -178,7 +180,11 @@ void navigateTo(context, widget) => Navigator.push(
 Widget buildPatientItems(getCheck, context) => SingleChildScrollView(
       child: GestureDetector(
         onTap: () {
-          navigateTo(context, PatientResult());
+          navigateTo(context, PatientResults());
+          CacheHelper.saveData(
+            key: 'CheckUpId',
+            value: '${GetCheckUpModel.fromJson(getCheck).id}',
+          );
         },
         child: Container(
           decoration: BoxDecoration(
@@ -245,11 +251,90 @@ Widget patientBuilder(getCheck, context) => ConditionalBuilder(
         separatorBuilder: (context, index) => const SizedBox(
           height: 10,
         ),
-        itemCount: getCheck.length,
+        itemCount: getCheckUp.length,
       ),
       fallback: (context) => Center(child: CircularProgressIndicator()),
     );
 
+Widget patientDataBuilder(getCheckPatient, context) => ConditionalBuilder(
+      condition: getCheckPatient.length > 0,
+      builder: (context) => ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) =>
+            buildPatientDataItems(getCheckPatient[index], context),
+        separatorBuilder: (context, index) => const SizedBox(
+          height: 10,
+        ),
+        itemCount: getCheckPatient.length,
+      ),
+      fallback: (context) => Center(child: CircularProgressIndicator()),
+    );
+
+Widget buildPatientDataItems(getCheck, context) => SingleChildScrollView(
+      child: GestureDetector(
+        onTap: () {
+          navigateTo(context, PatientResultsForPatient());
+          CacheHelper.saveData(
+            key: 'CheckUpPatientId',
+            value: '${GetCheckUpModel.fromJson(getCheck).id}',
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadiusDirectional.circular(10),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Image(
+                  image: NetworkImage(
+                    '${GetCheckUpModel.fromJson(getCheck).doctor?.image?.url}',
+                  ),
+                  height: 100,
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadiusDirectional.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      defulttext(
+                        textName:
+                            '${GetCheckUpModel.fromJson(getCheck).doctor?.firstName} ${GetCheckUpModel.fromJson(getCheck).doctor?.lastName}',
+                        size: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      GetCheckUpModel.fromJson(getCheck).doctor?.jobTitle == ''
+                          ? defulttext(textName: '')
+                          : defulttext(
+                              textName:
+                                  'Job: ${GetCheckUpModel.fromJson(getCheck).doctor?.jobTitle}',
+                              size: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      defulttext(
+                        textName:
+                            'Description:\n${GetCheckUpModel.fromJson(getCheck).description}',
+                        size: 17,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.blue[600],
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
 @override
 Widget buildPopMenuButton(BuildContext context) {
   return PopupMenuButton(
@@ -261,21 +346,22 @@ Widget buildPopMenuButton(BuildContext context) {
     onSelected: (value) {
       if (value == 0) {
         getDoctor == null;
-        // userlevel = 0;
         idStart == null;
-        // token = null;
-        CacheHelper.removeData(key: 'idCheckUps');
+        CacheHelper.removeData(key: 'CheckUpId');
+        CacheHelper.removeData(key: 'idCheckUps')
+            .then((value) => checkUpId = null);
         CacheHelper.removeData(key: 'userLevelId').then((value) {
           if (value) {
             userlevel == 0;
           }
         });
         CacheHelper.removeData(key: 'id').then((value) {
-          // idStart = null;
+          idStart = null;
         });
         CacheHelper.removeData(key: 'token').then((value) {
           if (value) {
             token == null;
+            getDoctor == null;
             navigatePushAndRemove(context, const LoginScreen());
             Fluttertoast.showToast(
               msg: 'Good By',
@@ -423,11 +509,14 @@ Widget searchBuilder(list, context, {isSearch = false}) => ConditionalBuilder(
 
 String? token;
 GetDoctorModel? getDoctor;
-// List<GetCheckUpModel>? getCheckUp;
+List<dynamic> getCheckUp = [];
+GetPatientModel? getPatient;
 String? firstnameOfDoctor;
 String? lastnameOfDoctor;
 int? userlevel = 0;
 String? idStart;
+String? checkUpId;
+String? checkUpIdForPatient;
 File? image;
 File? analysisImages;
 int? statuscode = 0;

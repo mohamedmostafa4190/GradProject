@@ -164,13 +164,6 @@ class _EditProfileState extends State<EditProfile> {
                       height: 5,
                     ),
                     textFormField(
-                      // validate: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'email must not be empty';
-                      //   } else {
-                      //     return null;
-                      //   }
-                      // },
                       validate: (value) {
                         value != null;
                       },
@@ -262,13 +255,6 @@ class _EditProfileState extends State<EditProfile> {
                       height: 5,
                     ),
                     textFormField(
-                      // validate: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'password must not be empty';
-                      //   } else {
-                      //     return null;
-                      //   }
-                      // },
                       validate: (value) {
                         value != null;
                       },
@@ -295,13 +281,6 @@ class _EditProfileState extends State<EditProfile> {
                       height: 5,
                     ),
                     textFormField(
-                      // validate: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'password must not be empty';
-                      //   } else {
-                      //     return null;
-                      //   }
-                      // },
                       validate: (value) {
                         value != null;
                       },
@@ -328,13 +307,6 @@ class _EditProfileState extends State<EditProfile> {
                       height: 5,
                     ),
                     textFormField(
-                      // validate: (value) {
-                      //   if (value.isEmpty) {
-                      //     return 'password must not be empty';
-                      //   } else {
-                      //     return null;
-                      //   }
-                      // },
                       validate: (value) {
                         value != null;
                       },

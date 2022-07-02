@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/modules/admin/create_Patient/create.dart';
 import 'package:mobile_app/modules/admin/create_Patient/delete.dart';
 import 'package:mobile_app/modules/admin/create_Patient/updata.dart';
-import 'package:mobile_app/modules/search_screen.dart';
 import 'package:mobile_app/shared/components/components.dart';
 import 'package:mobile_app/shared/styles/constant.dart';
 
@@ -68,7 +67,7 @@ class CreatePatientScreen extends StatelessWidget {
                   changeColor: btnsColor,
                   changeText: 'Updata Patient',
                   onPressed: () {
-                    navigateTo(context, UpdatePatient());
+                    navigateTo(context, const UpdatePatient());
                   },
                 ),
               ],

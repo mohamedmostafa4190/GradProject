@@ -2,10 +2,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile_app/modules/add_patient_screen.dart';
-import 'package:mobile_app/modules/create_checkups.dart';
-import 'package:mobile_app/modules/profile_screen.dart';
-import 'package:mobile_app/modules/search_screen.dart';
+import 'package:mobile_app/modules/doctor/add_patient_screen.dart';
+import 'package:mobile_app/modules/doctor/create_checkups.dart';
+import 'package:mobile_app/modules/doctor/profile_screen.dart';
+import 'package:mobile_app/modules/doctor/search_screen.dart';
 import 'package:mobile_app/shared/bloc/doctor_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/doctor_cubit/states.dart';
 import 'package:mobile_app/shared/bloc/profile/cubit.dart';
@@ -30,12 +30,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
     super.initState();
     var docCubit = AppDoctorCubit.get(context);
     var checks = AppDoctorCubit.get(context);
-    checks.getCheckUpForDoctor();
-    if (getDoctor == null) {
+    if (getDoctor != null) {
       print("getData ID " + CacheHelper.getData(key: "id").toString());
       idStart = CacheHelper.getData(key: "id");
       print("getDoctor id: ${idStart}");
       docCubit.getDoctorData(idStart);
+      checks.getCheckUpForDoctor();
     }
   }
 
@@ -44,7 +44,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
     return BlocConsumer<AppDoctorCubit, GetDoctorStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var checks = AppDoctorCubit.get(context).getCheckUp;
+        var checks = AppDoctorCubit.get(context);
         var doc = AppDoctorCubit.get(context);
         var prof = AppDoctorProfileCubit.get(context);
         return Scaffold(
@@ -155,10 +155,14 @@ class _DoctorScreenState extends State<DoctorScreen> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                navigateTo(context, const CheckUpScreen());
-                              });
+                            onTap: () async {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CheckUpScreen(),
+                                  )).then((value) => {
+                                    checks.getCheckUpForDoctor(),
+                                  });
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10.0),
@@ -243,15 +247,8 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // checks != null
-                  // ? defulttext(
-                  //     textName: '0 checkups',
-                  //     size: 18,
-                  //     color: Colors.grey[500],
-                  //     fontWeight: FontWeight.normal,
-                  //   )
                   defulttext(
-                    textName: '${checks.length} checkups',
+                    textName: '${getCheckUp.length} checkups',
                     size: 18,
                     color: Colors.grey[500],
                     fontWeight: FontWeight.normal,
@@ -259,8 +256,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // checks != null ? SizedBox() :
-                  patientBuilder(checks, context),
+                  patientBuilder(getCheckUp, context),
                 ],
               ),
             ),

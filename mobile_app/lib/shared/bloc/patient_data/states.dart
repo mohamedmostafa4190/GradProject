@@ -50,3 +50,28 @@ class AppUpoaldAnalysisLoadingStates extends GetPatientStates {}
 class AppUpoaldAnalysisSuccessStates extends GetPatientStates {}
 
 class AppUpoaldAnalysisErrorStates extends GetPatientStates {}
+//_______________________________________CheckUpForPatient___________________________________________________________
+
+class AppGetCheckUpForPatientLoadingStates extends GetPatientStates {}
+
+class AppGetCheckUpForPatientSuccessStates extends GetPatientStates {}
+
+class AppGetCheckUpForPatientErrorStates extends GetPatientStates {
+  final String error;
+
+  AppGetCheckUpForPatientErrorStates(this.error);
+}
+//_______________________________________GetDrugResultsPatient___________________________________________________________
+
+class AppGetDrugResultsPatientLoadingStates extends GetPatientStates {}
+
+class AppGetDrugResultsPatientSuccessStates extends GetPatientStates {}
+
+class AppGetDrugResultsPatientErrorStates extends GetPatientStates {}
+//_______________________________________GetAnalysisResultsPatient___________________________________________________________
+
+class AppGetAnalysisResultsPatientLoadingStates extends GetPatientStates {}
+
+class AppGetAnalysisResultsPatientSuccessStates extends GetPatientStates {}
+
+class AppGetAnalysisResultsPatientErrorStates extends GetPatientStates {}

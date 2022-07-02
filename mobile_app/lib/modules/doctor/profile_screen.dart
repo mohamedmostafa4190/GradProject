@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/modules/edit_profiles.dart';
+import 'package:mobile_app/modules/doctor/edit_profiles.dart';
 import 'package:mobile_app/shared/bloc/doctor_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/profile/cubit.dart';
 import 'package:mobile_app/shared/bloc/profile/states.dart';

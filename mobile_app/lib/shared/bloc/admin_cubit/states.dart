@@ -1,5 +1,6 @@
 import 'package:mobile_app/models/addpatient_model.dart';
 import 'package:mobile_app/models/analysis_model.dart';
+import 'package:mobile_app/models/diagnoses_model.dart';
 import 'package:mobile_app/models/drugs_model.dart';
 import 'package:mobile_app/models/drug2_model.dart';
 
@@ -275,4 +276,55 @@ class AppGetAnalysisErrorStates extends CreateAdminStates {
   final String error;
 
   AppGetAnalysisErrorStates(this.error);
+}
+
+//_________________________CreateDiagnosesStates_________________________________________________
+class AppCreateDiagnosesLoadingStates extends CreateAdminStates {}
+
+class AppCreateDiagnosesSuccessStates extends CreateAdminStates {}
+
+class AppCreateDiagnosesErrorStates extends CreateAdminStates {
+  final String error;
+
+  AppCreateDiagnosesErrorStates(this.error);
+}
+
+class AppDeleteDiagnosesLoadingStates extends CreateAdminStates {}
+
+class AppDeleteDiagnosesSuccessStates extends CreateAdminStates {}
+
+class AppDeleteDiagnosesErrorStates extends CreateAdminStates {
+  final String error;
+
+  AppDeleteDiagnosesErrorStates(this.error);
+}
+
+class AppUpdateDiagnosesLoadingStates extends CreateAdminStates {}
+
+class AppUpdateDiagnosesSuccessStates extends CreateAdminStates {
+  final DiagnosesModel upDataModel;
+  AppUpdateDiagnosesSuccessStates(
+    this.upDataModel,
+  );
+}
+
+class AppUpdateDiagnosesErrorStates extends CreateAdminStates {
+  final String error;
+
+  AppUpdateDiagnosesErrorStates(this.error);
+}
+
+class AppGetDiagnosesLoadingStates extends CreateAdminStates {}
+
+class AppGetDiagnosesSuccessStates extends CreateAdminStates {
+  final DiagnosesModel getModel;
+  AppGetDiagnosesSuccessStates(
+    this.getModel,
+  );
+}
+
+class AppGetDiagnosesErrorStates extends CreateAdminStates {
+  final String error;
+
+  AppGetDiagnosesErrorStates(this.error);
 }

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile_app/modules/create_analysis_rays.dart';
-import 'package:mobile_app/modules/create_drugs.dart';
+import 'package:mobile_app/modules/doctor/create_analysis_rays.dart';
+import 'package:mobile_app/modules/doctor/create_drugs.dart';
 import 'package:mobile_app/shared/bloc/doctor_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/patient_data/cubit.dart';
 import 'package:mobile_app/shared/bloc/patient_data/states.dart';
@@ -26,7 +26,7 @@ class _CheckUpScreenState extends State<CheckUpScreen> {
   final ImagePicker _picker = ImagePicker();
   late PickedFile _imageFile;
   List data = [];
-  Future<String> getSWData() async {
+  Future<String> getData() async {
     var res = await http.get(
         Uri.parse('https://grad-project-fy-1.herokuapp.com/api/v1/patients/'),
         headers: {
@@ -42,7 +42,7 @@ class _CheckUpScreenState extends State<CheckUpScreen> {
 
   void initState() {
     super.initState();
-    this.getSWData();
+    this.getData();
   }
 
   // List of items in our dropdown menu

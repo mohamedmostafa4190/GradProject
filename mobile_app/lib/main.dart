@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_app/layout/home_screen.dart';
 import 'package:mobile_app/modules/admin/admin_screen.dart';
-import 'package:mobile_app/modules/doctor_home_screen.dart';
+import 'package:mobile_app/modules/doctor/doctor_home_screen.dart';
 import 'package:mobile_app/modules/loginscreen.dart';
-import 'package:mobile_app/modules/patient_screen.dart';
+import 'package:mobile_app/modules/patient/patient_screen.dart';
 import 'package:mobile_app/shared/bloc/admin_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/bloc_observer.dart';
 import 'package:mobile_app/shared/bloc/create_patient/cubit.dart';
@@ -33,14 +33,6 @@ void main() async {
   statuscode = CacheHelper.getData(key: 'StatusCode');
   print("statuscode: $statuscode");
 
-  // if (homeScreen != null) {
-  //   if (token != null)
-  //     widget = DoctorScreen();
-  //   else
-  //     widget = LoginScreen();
-  // } else {
-  //   widget = HomeScreen();
-  // }
   if (homeScreen != null) {
     if (userLevelId.toString() == '3') {
       widget = const HomePatientScreen();

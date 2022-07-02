@@ -44,7 +44,7 @@ class AppSearchCubit extends Cubit<SearchStates> {
 
   void getPatientSearch(String text) {
     emit(AppSearchLoadingStates());
-    DioHelper.getData(url: GETCHECKUP, query: {
+    DioHelper.getData(url: GETCHECKUPForDoctor, query: {
       'search': text,
     }).then((value) {
       search = value.data;

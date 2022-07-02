@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mobile_app/models/addpatient_model.dart';
 import 'package:mobile_app/models/analysis_model.dart';
+import 'package:mobile_app/models/diagnoses_model.dart';
 import 'package:mobile_app/models/drugs_model.dart';
 import 'package:mobile_app/models/drug2_model.dart';
 import 'package:mobile_app/shared/bloc/admin_cubit/states.dart';
@@ -411,6 +412,76 @@ class AppAdminCubit extends Cubit<CreateAdminStates> {
     }).catchError((error) {
       print(error.toString());
       emit(AppUpdateAnalysisErrorStates(error.toString()));
+    });
+  }
+
+//_________________________________________Diagnoses_____________________________________
+  DiagnosesModel? creatediagnoses;
+  void createDiagnoses({
+    required String name,
+  }) {
+    emit(AppCreateDiagnosesLoadingStates());
+    DioHelper.postData(
+      url: DIAGNOSES,
+      data: {
+        'diagnose_name': name,
+      },
+    ).then((value) {
+      creatediagnoses = DiagnosesModel.fromJson(value.data);
+      print(value.data);
+      emit(AppCreateDiagnosesSuccessStates());
+    }).catchError((error) {
+      emit(AppCreateDiagnosesErrorStates(error.toString()));
+    });
+  }
+
+  DiagnosesModel? getdiagnoses;
+  void getDiagnosesData({
+    required String getDiagnosesID,
+  }) {
+    emit(AppGetDiagnosesLoadingStates());
+    DioHelper.getData(
+      url: DIAGNOSES + getDiagnosesID,
+    ).then((value) {
+      getdiagnoses = DiagnosesModel.fromJson(value.data);
+      print(doctorModel);
+      emit(AppGetDiagnosesSuccessStates(getdiagnoses!));
+    }).catchError((error) {
+      emit(AppGetDiagnosesErrorStates(error.toString()));
+    });
+  }
+
+  void deleteDiagnoses({
+    required String deleteID,
+  }) {
+    emit(AppDeleteDiagnosesLoadingStates());
+    DioHelper.deleteData(
+      url: DIAGNOSES + deleteID,
+    ).then((value) {
+      emit(AppDeleteDiagnosesSuccessStates());
+    }).catchError((error) {
+      emit(AppDeleteDiagnosesErrorStates(error.toString()));
+    });
+  }
+
+  DiagnosesModel? updateDiagnoses;
+  void upDateDiagnoses({
+    required String upDateID,
+    required String name,
+  }) {
+    emit(AppUpdateDiagnosesLoadingStates());
+    DioHelper.putData(
+      url: DIAGNOSES + upDateID,
+      data: {
+        'diagnose_name': name,
+      },
+    ).then((value) {
+      updateDiagnoses = DiagnosesModel.fromJson(value.data);
+      print(updateDrugs);
+      emit(AppUpdateDiagnosesSuccessStates(updateDiagnoses!));
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppUpdateDiagnosesErrorStates(error.toString()));
     });
   }
 }

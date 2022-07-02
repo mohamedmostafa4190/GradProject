@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobile_app/shared/bloc/doctor_cubit/cubit.dart';
 import 'package:mobile_app/shared/bloc/patient_data/cubit.dart';
 import 'package:mobile_app/shared/bloc/patient_data/states.dart';
 import 'package:mobile_app/shared/components/components.dart';
@@ -13,22 +11,22 @@ import 'package:http/http.dart' as http;
 import 'package:mobile_app/shared/network/local/cache_helper.dart';
 import 'package:mobile_app/shared/styles/constant.dart';
 
-class AnalysisScreen extends StatefulWidget {
-  const AnalysisScreen({Key? key}) : super(key: key);
+class PatientUploadAnalysis extends StatefulWidget {
+  const PatientUploadAnalysis({Key? key}) : super(key: key);
 
   @override
-  State<AnalysisScreen> createState() => _CheckUpScreenState();
+  State<PatientUploadAnalysis> createState() => _CheckUpScreenState();
 }
 
-class _CheckUpScreenState extends State<AnalysisScreen> {
+class _CheckUpScreenState extends State<PatientUploadAnalysis> {
   String? analysisvalueId;
+  String? checkupvalueId;
   bool buttomSheet = false;
   var scaffoldkey = GlobalKey<ScaffoldState>();
   String filePath = "";
   final ImagePicker _picker = ImagePicker();
   late PickedFile _imageFile;
   List data = [];
-  List checkUpdata = [];
 
   Future<String> getData() async {
     var res = await http.get(
@@ -47,6 +45,7 @@ class _CheckUpScreenState extends State<AnalysisScreen> {
   void initState() {
     super.initState();
     this.getData();
+    // this.getcheck();
   }
 
   var formKey = GlobalKey<FormState>();
@@ -168,10 +167,13 @@ class _CheckUpScreenState extends State<AnalysisScreen> {
                       ),
                     ),
                     const SizedBox(
+                      height: 5,
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: imageFromGallery,
+                      onTap: () => chooseImage(),
                       child: Container(
                         width: double.infinity,
                         height: 60,
@@ -188,38 +190,7 @@ class _CheckUpScreenState extends State<AnalysisScreen> {
                                 Icons.cloud_upload_sharp,
                               ),
                               onPressed: () {
-                                scaffoldkey.currentState
-                                    ?.showBottomSheet((context) => Container(
-                                          width: double.infinity,
-                                          height: 120,
-                                          child: SafeArea(
-                                            child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ListTile(
-                                                      leading: const Icon(
-                                                          Icons.camera_alt),
-                                                      title:
-                                                          const Text('Camera'),
-                                                      onTap: () {
-                                                        imageFromCamera();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      }),
-                                                  ListTile(
-                                                      leading: const Icon(
-                                                          Icons.image),
-                                                      title:
-                                                          const Text('Gallery'),
-                                                      onTap: () {
-                                                        imageFromGallery();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      }),
-                                                ]),
-                                          ),
-                                        ));
+                                chooseImage();
                               },
                             ),
                             defulttext(
@@ -240,13 +211,11 @@ class _CheckUpScreenState extends State<AnalysisScreen> {
                           changeColor: btnsColor,
                           changeColorOfText: Colors.white,
                           onPressed: () {
-                            print(analysisImages!.path);
-                            print(analysisvalueId.toString());
-                            var idCheckUp =
-                                CacheHelper.getData(key: 'idCheckUps');
+                            checkUpIdForPatient =
+                                CacheHelper.getData(key: 'CheckUpPatientId');
                             cubit.upLoadAnalysis(
                               analysisId: analysisvalueId.toString(),
-                              checkUpId: idCheckUp.toString(),
+                              checkUpId: checkUpIdForPatient.toString(),
                             );
                           }),
                     ),
@@ -271,6 +240,32 @@ class _CheckUpScreenState extends State<AnalysisScreen> {
         );
       },
     );
+  }
+
+  void chooseImage() {
+    scaffoldkey.currentState?.showBottomSheet((context) => Container(
+          width: double.infinity,
+          height: 120,
+          child: SafeArea(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    imageFromCamera();
+                    Navigator.of(context).pop();
+                  }),
+              ListTile(
+                  leading: const Icon(Icons.image),
+                  title: const Text('Gallery'),
+                  onTap: () {
+                    imageFromGallery();
+                    Navigator.of(context).pop();
+                  }),
+            ]),
+          ),
+        ));
   }
 
   void imageFromGallery() {
